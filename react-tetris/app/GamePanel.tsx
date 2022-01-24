@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Tetris from '../src/js/components/tetris';
+import Tetris, { StateChange } from '../src/js/components/tetris';
 
 const Container = styled.div`
   margin: 24px auto 0;
@@ -64,79 +64,104 @@ const Button = styled.button`
   border-radius: 4px;
 `;
 
-const GamePanel = (): JSX.Element => (
-  <Container>
-    <Tetris>
-      {({
-        Gameboard,
-        HeldPiece,
-        PieceQueue,
-        points,
-        linesCleared,
-        state,
-        controller
-      }) => (
-        <div>
-          <div style={{ opacity: state === 'PLAYING' ? 1 : 0.5 }}>
-            <Score>
-              <LeftHalf>
-                <p>
-                  points
-                  <br />
-                  <Digits>{points}</Digits>
-                </p>
-              </LeftHalf>
-              <RightHalf>
-                <p>
-                  lines
-                  <br />
-                  <Digits>{linesCleared}</Digits>
-                </p>
-              </RightHalf>
-            </Score>
+interface EventLog {
+  timestamp: number;
+  type: StateChange;
+  value: string | number;
+}
 
-            <LeftColumn>
-              <HeldPiece />
-            </LeftColumn>
+const GamePanel = (): JSX.Element => {
+  const [events, setEvents] = useState<EventLog[]>([]);
 
-            <MiddleColumn>
-              <Gameboard />
-            </MiddleColumn>
+  React.useEffect(() => {
+    console.log(events);
+  }, [events]);
 
-            <RightColumn>
-              <PieceQueue />
-            </RightColumn>
+  return (
+    <Container>
+      <Tetris
+        onStateChange={(state, value) => {
+          setEvents([
+            ...events,
+            {
+              timestamp: Date.now() / 1000,
+              type: state,
+              value: value
+            }
+          ]);
+        }}
+      >
+        {({
+          Gameboard,
+          HeldPiece,
+          PieceQueue,
+          points,
+          linesCleared,
+          state,
+          controller
+        }) => (
+          <div>
+            <div style={{ opacity: state === 'PLAYING' ? 1 : 0.5 }}>
+              <Score>
+                <LeftHalf>
+                  <p>
+                    points
+                    <br />
+                    <Digits>{points}</Digits>
+                  </p>
+                </LeftHalf>
+                <RightHalf>
+                  <p>
+                    lines
+                    <br />
+                    <Digits>{linesCleared}</Digits>
+                  </p>
+                </RightHalf>
+              </Score>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <button onClick={controller.moveLeft}>left</button>
-                <button onClick={controller.moveRight}>right</button>
+              <LeftColumn>
+                <HeldPiece />
+              </LeftColumn>
+
+              <MiddleColumn>
+                <Gameboard />
+              </MiddleColumn>
+
+              <RightColumn>
+                <PieceQueue />
+              </RightColumn>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                  <button onClick={controller.moveLeft}>left</button>
+                  <button onClick={controller.moveRight}>right</button>
+                </div>
+                <div>
+                  <button onClick={controller.flipClockwise}>turn</button>
+                  <button onClick={controller.hardDrop}>drop</button>
+                </div>
               </div>
-              <div>
-                <button onClick={controller.flipClockwise}>turn</button>
-                <button onClick={controller.hardDrop}>drop</button>
-              </div>
+
+              {state === 'PAUSED' && (
+                <Popup>
+                  <Alert>Paused</Alert>
+                  <Button onClick={controller.resume}>Start</Button>
+                </Popup>
+              )}
+
+              {state === 'LOST' && (
+                <Popup>
+                  <Alert>Game Over</Alert>
+                  <Button onClick={controller.restart}>Start</Button>
+                </Popup>
+              )}
             </div>
-
-            {state === 'PAUSED' && (
-              <Popup>
-                <Alert>Paused</Alert>
-                <Button onClick={controller.resume}>Start</Button>
-              </Popup>
-            )}
-
-            {state === 'LOST' && (
-              <Popup>
-                <Alert>Game Over</Alert>
-                <Button onClick={controller.restart}>Start</Button>
-              </Popup>
-            )}
           </div>
-        </div>
-      )}
-    </Tetris>
-  </Container>
-);
+        )}
+      </Tetris>
+    </Container>
+  );
+};
 
 const Digit = styled.span`
   font-family: monospace;

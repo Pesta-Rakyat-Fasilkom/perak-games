@@ -5,6 +5,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true
   }
 }

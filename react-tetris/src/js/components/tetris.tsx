@@ -5,7 +5,6 @@ import HeldPiece from './held-piece';
 import PieceQueue from './piece-queue';
 import { Context } from '../context';
 import { KeyboardMap, useKeyboardControls } from '../hooks/useKeyboardControls';
-import { Action } from '../models/Game';
 
 type RenderFn = (params: {
   HeldPiece: React.ComponentType;
@@ -31,9 +30,11 @@ type Controller = {
   restart: () => void;
 };
 
+export type StateChange = 'STATE' | 'POINTS' | 'LINES';
+
 type Props = {
   keyboardControls?: KeyboardMap;
-  onKeyPress?: (arg0: Action) => void;
+  onStateChange?: (arg0: StateChange, arg1: string | number) => void;
   children: RenderFn;
 };
 
@@ -57,13 +58,9 @@ const tickSeconds = (level: number) =>
 export default function Tetris(props: Props): JSX.Element {
   const [game, dispatch] = React.useReducer(Game.update, Game.init());
   const keyboardMap = props.keyboardControls ?? defaultKeyboardMap;
-  useKeyboardControls(keyboardMap, (value) => {
-    dispatch(value);
-    if (props.onKeyPress) {
-      props.onKeyPress(value);
-    }
-  });
   const level = Game.getLevel(game);
+
+  useKeyboardControls(keyboardMap, dispatch);
 
   React.useEffect(() => {
     let interval: number | undefined;
@@ -77,6 +74,24 @@ export default function Tetris(props: Props): JSX.Element {
       window.clearInterval(interval);
     };
   }, [game.state, level]);
+
+  React.useEffect(() => {
+    if (props.onStateChange) {
+      props.onStateChange('STATE', game.state);
+    }
+  }, [game.state]);
+
+  React.useEffect(() => {
+    if (props.onStateChange) {
+      props.onStateChange('POINTS', game.points);
+    }
+  }, [game.points]);
+
+  React.useEffect(() => {
+    if (props.onStateChange) {
+      props.onStateChange('LINES', game.lines);
+    }
+  }, [game.lines]);
 
   const controller = React.useMemo(
     () => ({
