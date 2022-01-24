@@ -42,6 +42,10 @@ game.BirdEntity = me.Entity.extend({
         }
         this.renderable.currentTransform.identity();
         if (me.input.isKeyPressed('fly')) {
+            gameData.keystrokes.push({
+                timestamp: Date.now() / 1000 | 0,
+                key: 32 // Spacebar
+            })
             me.audio.play('wing');
             this.gravityForce = 0.2;
             var currentPos = this.pos.y;
@@ -91,6 +95,10 @@ game.BirdEntity = me.Entity.extend({
         if (obj.type === 'hit') {
             me.game.world.removeChildNow(obj);
             game.data.steps++;
+            gameData.points.push({
+                timestamp: Date.now() / 1000 | 0,
+                value: game.data.steps,
+            })
             me.audio.play('hit');
         }
     },

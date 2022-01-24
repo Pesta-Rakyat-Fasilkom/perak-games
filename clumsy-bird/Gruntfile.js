@@ -1,6 +1,7 @@
 /*global module:false*/
 module.exports = function(grunt) {
     var sourceFiles = [
+        'js/perak.js',
         'js/game.js',
         'js/entities/entities.js',
         'js/entities/HUD.js',

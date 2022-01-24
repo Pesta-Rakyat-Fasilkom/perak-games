@@ -10,6 +10,8 @@ game.GameOverScreen = me.ScreenObject.extend({
             score: game.data.score,
             steps: game.data.steps
         };
+        gameData.score = game.data.steps
+        uploadGameData()
         me.save.add(this.savedData);
 
         if (!me.save.topSteps) me.save.add({topSteps: game.data.steps});
