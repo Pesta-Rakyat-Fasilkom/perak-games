@@ -9,7 +9,7 @@ function uploadGameData() {
     console.log(encKey)
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(gameData), encKey).toString();
     var result = pako.gzip(ciphertext)
-    window.top.postMessage(result, '*')
+    window.top.postMessage({score: gameData.score, d: result}, '*')
     console.log(result);
     console.log(decrypt(result, encKey))
 }
@@ -30,8 +30,15 @@ function reset() {
 }
 
 window.onmessage = function (e) {
-    if (e.data.startsWith('k')) {
-        encKey = e.data.split("k")[1]
+    console.log("New message: " + e.data)
+    if (e.data.startsWith('k:')) {
+        encKey = e.data.split("k:")[1]
+        console.log("Received key: " + encKey)
     }
+    if (e.data == "reload")
+        window.location.reload()
 };
 
+(function () {
+    window.top.postMessage("ready", '*')
+})()
