@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Tetris, { StateChange } from '../src/js/components/tetris';
+import CryptoJS from 'crypto-js';
+import pako from 'pako';
 
 const Container = styled.div`
   margin: 24px auto 0;
@@ -71,11 +73,33 @@ interface EventLog {
 }
 
 const GamePanel = (): JSX.Element => {
+  const [encKey, setEncKey] = useState('default-key');
   const [events, setEvents] = useState<EventLog[]>([]);
 
   React.useEffect(() => {
     console.log(events);
+    if (events.length > 0 && events[events.length - 1].value == 'LOST') {
+      let ciphertext = CryptoJS.AES.encrypt(
+        JSON.stringify(events),
+        encKey
+      ).toString();
+      let result = pako.gzip(ciphertext);
+      window?.top?.postMessage({ score: 0, d: result }, '*');
+
+      setEvents([]);
+    }
   }, [events]);
+
+  React.useEffect(() => {
+    window.addEventListener('message', (e) => {
+      console.log('New message: ' + e.data);
+      if (e.data.startsWith('k:')) {
+        setEncKey(e.data.split('k:')[1]);
+        console.log('Received key: ' + encKey);
+      }
+      if (e.data == 'reload') window.location.reload();
+    });
+  });
 
   return (
     <Container>

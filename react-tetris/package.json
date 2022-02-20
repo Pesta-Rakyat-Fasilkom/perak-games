@@ -8,7 +8,9 @@
     "url": "https://github.com/brandly/react-tetris"
   },
   "dependencies": {
-    "keymaster": "1.6.2"
+    "crypto-js": "^4.1.1",
+    "keymaster": "1.6.2",
+    "pako": "^2.0.4"
   },
   "scripts": {
     "build:lib": "rollup --config rollup.lib.js",
@@ -31,7 +33,9 @@
     "@rollup/plugin-replace": "3.0.0",
     "@rollup/plugin-typescript": "8.2.5",
     "@types/assert": "1.5.6",
+    "@types/crypto-js": "^4.1.1",
     "@types/events": "3.0.0",
+    "@types/pako": "^1.0.3",
     "@types/react": "17.0.30",
     "@types/react-dom": "17.0.9",
     "@types/styled-components": "5.1.15",

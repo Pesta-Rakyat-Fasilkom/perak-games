@@ -83,13 +83,8 @@ export default function Tetris(props: Props): JSX.Element {
 
   React.useEffect(() => {
     if (props.onStateChange) {
-      props.onStateChange('POINTS', game.points);
-    }
-  }, [game.points]);
-
-  React.useEffect(() => {
-    if (props.onStateChange) {
       props.onStateChange('LINES', game.lines);
+      props.onStateChange('POINTS', game.points);
     }
   }, [game.lines]);
 
