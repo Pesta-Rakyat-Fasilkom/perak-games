@@ -8,8 +8,12 @@ from ghp_import import ghp_import
 
 cwd = Path(".").absolute()
 clumsy_dir = Path("clumsy-bird").absolute()
+tetris_dir = Path("react-tetris").absolute()
 result_dir = Path("result").absolute()
 flappy_dir = result_dir / "flappybird"
+
+if result_dir.exists():
+    shutil.rmtree(result_dir)
 
 os.chdir(clumsy_dir)
 
@@ -28,6 +32,18 @@ for dir in copy_dirs:
 copy_files = ["app.json", "humans.txt", "index.css", "index.html", "js/melonJS-min.js"]
 for f in copy_files:
     shutil.copy(clumsy_dir / f, flappy_dir / f)
+
+
+################ TETRIS
+os.chdir(tetris_dir)
+res = subprocess.run("npm run build:lib", shell=True)
+res.check_returncode()
+
+res = subprocess.run("npm run build:app", shell=True)
+res.check_returncode()
+
+shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
+shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
 
 ghp_import(
     "result",
