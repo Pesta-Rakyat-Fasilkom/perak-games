@@ -551,7 +551,7 @@ var init = function () {
     var queue = create(5);
     var next = getNext(queue);
     return {
-        state: 'PLAYING',
+        state: 'PAUSED',
         points: 0,
         lines: 0,
         matrix: buildMatrix(),
@@ -997,8 +997,8 @@ function Tetris(props) {
     var _a;
     var _b = React__default["default"].useReducer(update, init()), game = _b[0], dispatch = _b[1];
     var keyboardMap = (_a = props.keyboardControls) !== null && _a !== void 0 ? _a : defaultKeyboardMap;
-    useKeyboardControls(keyboardMap, dispatch);
     var level = getLevel(game);
+    useKeyboardControls(keyboardMap, dispatch);
     React__default["default"].useEffect(function () {
         var interval;
         if (game.state === 'PLAYING') {
@@ -1010,6 +1010,17 @@ function Tetris(props) {
             window.clearInterval(interval);
         };
     }, [game.state, level]);
+    React__default["default"].useEffect(function () {
+        if (props.onStateChange) {
+            props.onStateChange('STATE', game.state);
+        }
+    }, [game.state]);
+    React__default["default"].useEffect(function () {
+        if (props.onStateChange) {
+            props.onStateChange('LINES', game.lines);
+            props.onStateChange('POINTS', game.points);
+        }
+    }, [game.lines]);
     var controller = React__default["default"].useMemo(function () { return ({
         pause: function () { return dispatch('PAUSE'); },
         resume: function () { return dispatch('RESUME'); },

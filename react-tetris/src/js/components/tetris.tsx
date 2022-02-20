@@ -35,6 +35,7 @@ export type StateChange = 'STATE' | 'POINTS' | 'LINES';
 type Props = {
   keyboardControls?: KeyboardMap;
   onStateChange?: (arg0: StateChange, arg1: string | number) => void;
+  onPointChange?: (arg0: number) => void;
   children: RenderFn;
 };
 
@@ -84,7 +85,9 @@ export default function Tetris(props: Props): JSX.Element {
   React.useEffect(() => {
     if (props.onStateChange) {
       props.onStateChange('LINES', game.lines);
-      props.onStateChange('POINTS', game.points);
+    }
+    if (props.onPointChange) {
+      props.onPointChange(game.points);
     }
   }, [game.lines]);
 

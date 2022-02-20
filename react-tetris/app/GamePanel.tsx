@@ -74,6 +74,7 @@ interface EventLog {
 
 const GamePanel = (): JSX.Element => {
   const [encKey, setEncKey] = useState('default-key');
+  const [point, setPoints] = useState(0);
   const [events, setEvents] = useState<EventLog[]>([]);
 
   React.useEffect(() => {
@@ -84,7 +85,9 @@ const GamePanel = (): JSX.Element => {
         encKey
       ).toString();
       let result = pako.gzip(ciphertext);
-      window?.top?.postMessage({ score: 0, d: result }, '*');
+
+      console.log({ score: point, d: result });
+      window?.top?.postMessage({ score: point, d: result }, '*');
 
       setEvents([]);
     }
@@ -104,6 +107,9 @@ const GamePanel = (): JSX.Element => {
   return (
     <Container>
       <Tetris
+        onPointChange={(point) => {
+          setPoints(point);
+        }}
         onStateChange={(state, value) => {
           setEvents([
             ...events,
