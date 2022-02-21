@@ -102,7 +102,8 @@ const GamePanel = (): JSX.Element => {
       }
       if (e.data == 'reload') window.location.reload();
     });
-  });
+    window?.top?.postMessage('ready', '*');
+  }, []);
 
   return (
     <Container>
