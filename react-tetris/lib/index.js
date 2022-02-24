@@ -1018,7 +1018,9 @@ function Tetris(props) {
     React__default["default"].useEffect(function () {
         if (props.onStateChange) {
             props.onStateChange('LINES', game.lines);
-            props.onStateChange('POINTS', game.points);
+        }
+        if (props.onPointChange) {
+            props.onPointChange(game.points);
         }
     }, [game.lines]);
     var controller = React__default["default"].useMemo(function () { return ({
