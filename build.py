@@ -9,7 +9,10 @@ from ghp_import import ghp_import
 cwd = Path(".").absolute()
 clumsy_dir = Path("clumsy-bird").absolute()
 tetris_dir = Path("react-tetris").absolute()
+pacman_dir = Path("pacman-js").absolute()
 result_dir = Path("result").absolute()
+
+########### Flappy Bird
 flappy_dir = result_dir / "flappybird"
 
 if result_dir.exists():
@@ -44,6 +47,14 @@ res.check_returncode()
 
 shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
 shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
+
+################ PACMAN
+os.chdir(pacman_dir)
+res = subprocess.run("npx gulp", shell=True)
+res.check_returncode()
+
+shutil.copytree(pacman_dir / "build", result_dir / "pacman" / "build")
+shutil.copy(pacman_dir / "index.html", result_dir / "pacman" / "index.html")
 
 os.chdir(cwd)
 ghp_import(
