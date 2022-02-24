@@ -45,6 +45,7 @@ res.check_returncode()
 shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
 shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
 
+os.chdir(cwd)
 ghp_import(
     "result",
     mesg="Import from cmd",
