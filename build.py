@@ -64,7 +64,6 @@ ghp_import(
     mesg="Import from cmd",
     nojekyll=True,
     push=True,
-    no_history=True,
 )
 
 shutil.rmtree(result_dir)
