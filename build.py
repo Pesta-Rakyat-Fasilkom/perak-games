@@ -1,6 +1,5 @@
 import subprocess
 import os
-from typing import Optional
 import shutil
 from pathlib import Path
 
@@ -12,7 +11,7 @@ tetris_dir = Path("react-tetris").absolute()
 pacman_dir = Path("pacman-js").absolute()
 result_dir = Path("result").absolute()
 
-########### Flappy Bird
+# Flappy Bird
 flappy_dir = result_dir / "flappybird"
 
 if result_dir.exists():
@@ -37,7 +36,7 @@ for f in copy_files:
     shutil.copy(clumsy_dir / f, flappy_dir / f)
 
 
-################ TETRIS
+# TETRIS
 os.chdir(tetris_dir)
 res = subprocess.run("npm run build:lib", shell=True)
 res.check_returncode()
@@ -48,13 +47,16 @@ res.check_returncode()
 shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
 shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
 
-################ PACMAN
+# PACMAN
 os.chdir(pacman_dir)
 res = subprocess.run("npx gulp", shell=True)
 res.check_returncode()
 
-shutil.copytree(pacman_dir / "build", result_dir / "pacman" / "build")
+copy_dirs = ["bower_components", "build"]
+for dir in copy_dirs:
+    shutil.copytree(clumsy_dir / dir, result_dir / "pacman" / dir)
 shutil.copy(pacman_dir / "index.html", result_dir / "pacman" / "index.html")
+
 
 os.chdir(cwd)
 ghp_import(

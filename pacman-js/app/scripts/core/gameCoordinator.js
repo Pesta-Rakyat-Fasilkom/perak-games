@@ -155,6 +155,7 @@ class GameCoordinator {
     this.reset();
     if (this.firstGame) {
       this.firstGame = false;
+      gameData.startTime = Math.floor(Date.now() / 1000);
       this.init();
     }
     this.startGameplay(true);
@@ -875,11 +876,31 @@ class GameCoordinator {
     }, 750);
   }
 
+  uploadGameData() {
+    console.log(encKey)
+    console.log(gameData)
+    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(gameData), encKey).toString();
+    var result = pako.gzip(ciphertext)
+    window.top.postMessage({score: gameData.score, d: result}, '*')
+    this.resetGameData()
+  }
+
+  resetGameData() {
+    gameData = {
+      score: 0,
+      startTime: 0,
+      endTime: 0,
+    };
+  }
+
   /**
    * Displays GAME OVER text and displays the menu so players can play again
    */
   gameOver() {
     localStorage.setItem('highScore', this.highScore);
+    gameData.score = this.points
+    gameData.endTime = Math.floor(Date.now() / 1000)
+    this.uploadGameData()
 
     new Timer(() => {
       this.displayText(
