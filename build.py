@@ -52,9 +52,9 @@ os.chdir(pacman_dir)
 res = subprocess.run("npx gulp", shell=True)
 res.check_returncode()
 
-copy_dirs = ["bower_components", "build"]
+copy_dirs = ["bower_components", "build", "app"]
 for dir in copy_dirs:
-    shutil.copytree(clumsy_dir / dir, result_dir / "pacman" / dir)
+    shutil.copytree(pacman_dir / dir, result_dir / "pacman" / dir)
 shutil.copy(pacman_dir / "index.html", result_dir / "pacman" / "index.html")
 
 
