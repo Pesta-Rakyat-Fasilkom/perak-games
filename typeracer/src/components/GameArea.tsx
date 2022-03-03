@@ -20,6 +20,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
         startGame,
         mutateWordsCount,
         mutateCharCount,
+        mutateExpectedWordsCount,
         mutateExpectedCount,
         mutateStrokeCount,
         appendInputs,
@@ -35,6 +36,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
             if (currentProgress.trim() == currentWord) mutateWordsCount('increment')
             mutateCharCount(currentProgress.length)
             mutateExpectedCount(currentWord.length + 1)
+            mutateExpectedWordsCount('increment')
 
             let nextIdx = words.indexOf(currentWord) + 1
             setCurrentWord(words[nextIdx])
@@ -71,6 +73,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
         if (gameStopped) {
             mutateCharCount(currentProgress.length)
             mutateExpectedCount(currentWord.length + 1)
+            mutateExpectedWordsCount('increment')
         }
     }, [gameStopped])
 
@@ -90,7 +93,6 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
                         mutateStrokeCount('increment')
                         setProgress((current) => current + key)
                     }
-                    console.log(currentProgress + key)
                 }}
             />
             <div className="relative w-full h-[128px]">
