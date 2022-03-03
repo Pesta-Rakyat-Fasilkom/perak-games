@@ -10,9 +10,13 @@
   "dependencies": {
     "preact": "^10.5.15",
     "prop-types": "^15.8.1",
-    "react-keyboard-event-handler": "^1.5.4"
+    "react-keyboard-event-handler": "^1.5.4",
+    "crypto-js": "^4.1.1",
+    "pako": "^2.0.4"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/pako": "^1.0.3",
     "@preact/preset-vite": "^2.1.5",
     "@types/react-keyboard-event-handler": "^1.5.2",
     "autoprefixer": "^10.4.2",
