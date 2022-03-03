@@ -56,7 +56,13 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
                 removeWords(removedElemCount)
             } else {
                 setHistory((current) => [...current, currentProgress.trim()])
-                setCursorOffset((current) => current + currentWord.length + 1)
+                let delta: number
+                if (currentProgress.trim().length > currentWord.length) {
+                    delta = currentProgress.length - 1
+                } else {
+                    delta = currentWord.length
+                }
+                setCursorOffset((current) => current + delta + 1)
             }
         }
     }, [currentProgress])
