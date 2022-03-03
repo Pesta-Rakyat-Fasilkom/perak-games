@@ -25,6 +25,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
         mutateStrokeCount,
         appendInputs,
         gameStopped,
+        uploadGameplay,
     } = useGameContext()
 
     useEffect(() => {
@@ -71,9 +72,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
 
     useEffect(() => {
         if (gameStopped) {
-            mutateCharCount(currentProgress.length)
-            mutateExpectedCount(currentWord.length + 1)
-            mutateExpectedWordsCount('increment')
+            uploadGameplay()
         }
     }, [gameStopped])
 

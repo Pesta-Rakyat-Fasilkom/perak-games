@@ -6,7 +6,21 @@ import { GameContextProvider } from './context/GameContext'
 import { randomPick } from './utils/arrayUtils'
 
 export function App() {
+    const [encKey, setEncKey] = useState('default-key')
     const [words, setWords] = useState<string[]>([])
+
+    useEffect(() => {
+        window.addEventListener('message', (e) => {
+            console.log('New message: ' + e.data)
+            if (e.data.startsWith('k:')) {
+                setEncKey(e.data.split('k:')[1])
+                console.log('Received key: ' + encKey)
+            }
+            if (e.data == 'reload') window.location.reload()
+        })
+        window?.top?.postMessage('ready', '*')
+    }, [])
+
     useEffect(() => {
         async function fetchWords() {
             let response = await fetch('./words.txt')
@@ -35,7 +49,7 @@ export function App() {
             className="flex flex-col items-center justify-center
                         min-h-screen min-w-screen bg-black-900 text-white"
         >
-            <GameContextProvider>
+            <GameContextProvider encKey={encKey}>
                 <div className="w-full px-8 sm:px-16 md:px-32 py-16 mx-auto">
                     <div className="flex flex-row w-full justify-between font-retro">
                         <Timer />

@@ -1,8 +1,11 @@
 import { createContext, FunctionalComponent } from 'preact'
-import { useContext, useEffect, useReducer, useState } from 'preact/hooks'
-import GameContextProps from '../interface/GameContext'
+import { useContext, useEffect, useCallback, useReducer, useState } from 'preact/hooks'
+import GameContextType from '../interface/GameContext'
+import GameContextProps from '../interface/GameContextProps'
+import CryptoJS from 'crypto-js'
+import pako from 'pako'
 
-export const GameContext = createContext({} as GameContextProps)
+export const GameContext = createContext({} as GameContextType)
 export const useGameContext = () => useContext(GameContext)
 
 const counterReducer = (state: number, action: string) => {
@@ -20,7 +23,7 @@ const counterReducer = (state: number, action: string) => {
 
 const deltaReducer = (state: number, delta: number) => state + delta
 
-export const GameContextProvider: FunctionalComponent = ({ children }) => {
+export const GameContextProvider: FunctionalComponent<GameContextProps> = ({ children, encKey }) => {
     const [startTime, setStartTime] = useState(0)
     const [wordsCount, mutateWordsCount] = useReducer(counterReducer, 0)
     const [expectedWordsCount, mutateExpectedWordsCount] = useReducer(counterReducer, 0)
@@ -50,6 +53,25 @@ export const GameContextProvider: FunctionalComponent = ({ children }) => {
         }
     }, [expectedWordsCount])
 
+    const uploadGameplay = () => {
+        let ciphertext = CryptoJS.AES.encrypt(
+            JSON.stringify({
+                startTime,
+                wordsCount,
+                charCount,
+                expectedWordsCount,
+                expectedCharCount,
+                strokeCount,
+                inputs,
+                accuracy,
+            }),
+            encKey
+        ).toString()
+        let result = pako.gzip(ciphertext)
+
+        window?.top?.postMessage({ score: Math.round(wpm * 100), d: result }, '*')
+    }
+
     return (
         <GameContext.Provider
             value={{
@@ -71,6 +93,7 @@ export const GameContextProvider: FunctionalComponent = ({ children }) => {
                 stopGame: () => setGameStop(true),
                 startGame: () => setStartTime(Date.now() / 1000),
                 appendInputs,
+                uploadGameplay,
             }}
         >
             {children}

@@ -17,6 +17,7 @@ interface GameContext {
     startGame: () => void
     stopGame: () => void
     appendInputs: (arg0: string[]) => void
+    uploadGameplay: () => void
 }
 
 export default GameContext
