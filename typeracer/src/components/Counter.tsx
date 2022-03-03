@@ -2,11 +2,11 @@ import { FunctionalComponent } from 'preact'
 import { useGameContext } from '../context/GameContext'
 
 const Counter: FunctionalComponent = () => {
-    const { wordsCount, charCount, strokeCount } = useGameContext()
+    const { wordsCount, charCount, expectedCharCount, strokeCount } = useGameContext()
 
     return (
         <div className="font-retro">
-            {wordsCount}/{charCount}/{strokeCount}
+            {wordsCount}/{expectedCharCount}/{charCount}/{strokeCount}
         </div>
     )
 }
