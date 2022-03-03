@@ -9,6 +9,7 @@ cwd = Path(".").absolute()
 clumsy_dir = Path("clumsy-bird").absolute()
 tetris_dir = Path("react-tetris").absolute()
 pacman_dir = Path("pacman-js").absolute()
+typeracer_dir = Path("typeracer").absolute()
 result_dir = Path("result").absolute()
 
 # Flappy Bird
@@ -57,6 +58,12 @@ for dir in copy_dirs:
     shutil.copytree(pacman_dir / dir, result_dir / "pacman" / dir)
 shutil.copy(pacman_dir / "index.html", result_dir / "pacman" / "index.html")
 
+# Typeracer
+os.chdir(typeracer_dir)
+res = subprocess.run("yarn build", shell=True)
+res.check_returncode()
+
+shutil.copytree(typeracer_dir / "dist", result_dir / "typeracer")
 
 os.chdir(cwd)
 ghp_import(
