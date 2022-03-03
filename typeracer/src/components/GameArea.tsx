@@ -105,7 +105,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
                         isProcessing={true}
                     />
 
-                    {words.slice(history.length + 1).map((word, idx) => {
+                    {words.slice(history.length + 1, history.length + 50).map((word, idx) => {
                         return <Word word={word} wordProgress={''} isProcessing={false} />
                     })}
                 </div>
