@@ -1,5 +1,5 @@
 import { createContext, FunctionalComponent } from 'preact'
-import { useContext, useReducer, useState } from 'preact/hooks'
+import { useContext, useEffect, useReducer, useState } from 'preact/hooks'
 import GameContextProps from '../interface/GameContext'
 
 export const GameContext = createContext({} as GameContextProps)
@@ -31,6 +31,14 @@ export const GameContextProvider: FunctionalComponent = ({ children }) => {
     const [inputs, setInputs] = useState<string[]>([])
     const appendInputs = (newInputs: string[]) => setInputs([...inputs, ...newInputs])
 
+    const [accuracy, setAccuracy] = useState(0)
+    const [wpm, setWpm] = useState(0)
+
+    useEffect(() => {
+        setAccuracy(((2 * expectedCharCount - strokeCount) / expectedCharCount) * 100)
+        setWpm((strokeCount / 5) * 2 * Math.min(accuracy, 1))
+    }, [wordsCount])
+
     return (
         <GameContext.Provider
             value={{
@@ -41,6 +49,8 @@ export const GameContextProvider: FunctionalComponent = ({ children }) => {
                 strokeCount,
                 gameStopped,
                 inputs,
+                wpm,
+                accuracy,
                 mutateWordsCount,
                 mutateCharCount,
                 mutateExpectedCount,

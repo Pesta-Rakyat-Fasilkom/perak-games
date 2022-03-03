@@ -37,7 +37,7 @@ export function App() {
         >
             <GameContextProvider>
                 <div className="w-full px-8 sm:px-16 md:px-32 py-16 mx-auto">
-                    <div className="flex flex-row w-full justify-between">
+                    <div className="flex flex-row w-full justify-between font-retro">
                         <Timer />
                         <Counter />
                     </div>

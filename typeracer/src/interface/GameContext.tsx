@@ -6,6 +6,8 @@ interface GameContext {
     strokeCount: number
     gameStopped: boolean
     inputs: string[]
+    wpm: number
+    accuracy: number
     mutateWordsCount: (arg0: string) => void
     mutateCharCount: (arg0: number) => void
     mutateStrokeCount: (arg0: string) => void
