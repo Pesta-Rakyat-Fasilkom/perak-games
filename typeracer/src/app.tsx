@@ -9,7 +9,7 @@ export function App() {
     const [words, setWords] = useState<string[]>([])
     useEffect(() => {
         async function fetchWords() {
-            let response = await fetch('/words.txt')
+            let response = await fetch('./words.txt')
             if (response.ok) {
                 let wordList = await response.text()
 
