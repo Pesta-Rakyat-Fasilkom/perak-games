@@ -35,8 +35,13 @@ export const GameContextProvider: FunctionalComponent = ({ children }) => {
     const [wpm, setWpm] = useState(0)
 
     useEffect(() => {
-        setAccuracy(((2 * expectedCharCount - strokeCount) / expectedCharCount) * 100)
-        setWpm((strokeCount / 5) * 2 * Math.min(accuracy, 1))
+        if (expectedCharCount > 0) {
+            setAccuracy(((2 * expectedCharCount - strokeCount) / expectedCharCount) * 100)
+            setWpm((strokeCount / 5) * 2 * Math.min(accuracy, 1))
+        } else {
+            setAccuracy(0)
+            setWpm(0)
+        }
     }, [wordsCount])
 
     return (
