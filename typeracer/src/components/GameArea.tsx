@@ -9,6 +9,10 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
     const [currentWord, setCurrentWord] = useState(words[0])
     const [currentProgress, setProgress] = useState('')
     const [history, setHistory] = useState<string[]>([])
+    const [cursorOffset, setCursorOffset] = useState(0)
+
+    // idk just guessing
+    const fontWidth = 14.35
 
     const currentWordElem = useRef<HTMLDivElement>(null)
     const {
@@ -48,9 +52,11 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
 
                 appendInputs([...history, currentProgress.trim()])
                 setHistory([])
+                setCursorOffset(0)
                 removeWords(removedElemCount)
             } else {
                 setHistory((current) => [...current, currentProgress.trim()])
+                setCursorOffset((current) => current + currentWord.length + 1)
             }
         }
     }, [currentProgress])
@@ -74,7 +80,13 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
                     console.log(currentProgress + key)
                 }}
             />
-            <div className="relative transition-all w-full h-[128px]">
+            <div className="relative w-full h-[128px]">
+                <div
+                    className="border-l-4 border-l-grey border-opacity-75 h-[2rem] absolute animate-pulse transition-all"
+                    style={{
+                        left: (currentProgress.length + cursorOffset) * fontWidth + 'px',
+                    }}
+                />
                 <div className="flex flex-row font-mono select-none flex-wrap max-h-[128px] overflow-hidden text-2xl absolute">
                     {words.slice(0, history.length).map((word, idx) => {
                         return <Word word={word} wordProgress={history[idx]} isProcessing={true} />
