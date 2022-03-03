@@ -67,6 +67,13 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
         }
     }, [currentProgress])
 
+    useEffect(() => {
+        if (gameStopped) {
+            mutateCharCount(currentProgress.length)
+            mutateExpectedCount(currentWord.length + 1)
+        }
+    }, [gameStopped])
+
     return (
         <>
             <KeyboardEventHandler
