@@ -14,7 +14,7 @@ const Word: FunctionalComponent<WordProps> = ({ divRef, word, wordProgress, isPr
                             : ''
                     }
                 >
-                    {wordProgress.length > idx ? wordProgress.charAt(idx) : char}
+                    {char}
                 </span>
             ))}
             {wordProgress
