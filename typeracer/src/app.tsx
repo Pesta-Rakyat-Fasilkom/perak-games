@@ -15,7 +15,7 @@ export function App() {
 
                 let availableWords = wordList.split('\n')
                 let randomWords = []
-                for (let i = 0; i < 200; i++) {
+                for (let i = 0; i < 500; i++) {
                     randomWords.push(randomPick(availableWords))
                 }
                 setWords(randomWords)
