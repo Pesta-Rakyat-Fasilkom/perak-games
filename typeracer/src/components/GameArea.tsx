@@ -118,6 +118,15 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, r
                     })}
                 </div>
             </div>
+            <button
+                onClick={() => location.reload()}
+                className={
+                    'bg-gray-600 text-white font-mono w-full p-2 rounded text-center cursor-pointer mt-4 ' +
+                    (gameStopped ? '' : 'hidden')
+                }
+            >
+                Klik di sini untuk refresh dan memulai ulang.
+            </button>
         </>
     )
 }
