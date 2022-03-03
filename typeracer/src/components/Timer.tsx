@@ -22,7 +22,7 @@ const Timer: FunctionalComponent = () => {
         clearInterval(intervalId)
     }, [countdown])
 
-    return <div className="font-retro">{countdown}</div>
+    return <div className="font-retro text-lemon">{countdown}</div>
 }
 
 export default Timer
