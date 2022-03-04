@@ -56,7 +56,7 @@ export function App() {
                         min-h-screen min-w-screen bg-black-900 text-white"
         >
             <GameContextProvider encKey={encKey}>
-                <div className="w-full px-8 sm:px-16 md:px-32 py-16 mx-auto">
+                <div className="w-full px-8 sm:px-16 md:px-32 2xl:px-64 py-16 mx-auto">
                     <div className="flex flex-row w-full justify-between font-retro">
                         <Timer />
                         <Counter />
