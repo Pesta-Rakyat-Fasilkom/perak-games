@@ -82,6 +82,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
                 isDisabled={gameStopped}
                 handleKeys={['alphabetic', 'backspace', 'space']}
                 onKeyEvent={(key, e) => {
+                    e.preventDefault()
                     if (key == 'space') {
                         key = ' '
                     }
