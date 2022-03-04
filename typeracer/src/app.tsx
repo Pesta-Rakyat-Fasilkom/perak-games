@@ -6,6 +6,7 @@ import { GameContextProvider } from './context/GameContext'
 import { randomPick } from './utils/arrayUtils'
 
 export function App() {
+    const [isLoading, setLoading] = useState(true)
     const [encKey, setEncKey] = useState('default-key')
     const [words, setWords] = useState<string[]>([])
 
@@ -33,6 +34,7 @@ export function App() {
                     randomWords.push(randomPick(availableWords))
                 }
                 setWords(randomWords)
+                setLoading(false)
             }
         }
 
@@ -55,8 +57,17 @@ export function App() {
                         <Timer />
                         <Counter />
                     </div>
-                    {words.length > 1 && (
+                    {!isLoading && words.length > 1 ? (
                         <GameArea words={words} onProgress={(a) => null} frozen={false} removeWords={removeWords} />
+                    ) : (
+                        <p
+                            className="h-[128px] font-retro w-full text-center text-xl text-white animate-pulse"
+                            style={{
+                                lineHeight: '128px',
+                            }}
+                        >
+                            Loading...
+                        </p>
                     )}
                 </div>
             </GameContextProvider>
