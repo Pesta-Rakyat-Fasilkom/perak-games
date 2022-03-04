@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'preact/hooks'
 import Counter from './components/Counter'
 import GameArea from './components/GameArea'
+import TextArea from './components/TextArea'
 import Timer from './components/Timer'
 import { GameContextProvider } from './context/GameContext'
 import { randomPick } from './utils/arrayUtils'
+import { isMobile } from './utils/mobile'
 
 export function App() {
     const [isLoading, setLoading] = useState(true)
     const [encKey, setEncKey] = useState('default-key')
     const [words, setWords] = useState<string[]>([])
+
+    const inMobile = isMobile.any()
 
     useEffect(() => {
         window.addEventListener('message', (e) => {
@@ -57,17 +61,12 @@ export function App() {
                         <Timer />
                         <Counter />
                     </div>
-                    {!isLoading && words.length > 1 ? (
+                    {inMobile ? (
+                        <TextArea>Game ini hanya dapat dimainkan pada Desktop.</TextArea>
+                    ) : !isLoading && words.length > 1 ? (
                         <GameArea words={words} onProgress={(a) => null} frozen={false} removeWords={removeWords} />
                     ) : (
-                        <p
-                            className="h-[128px] font-retro w-full text-center text-xl text-white animate-pulse"
-                            style={{
-                                lineHeight: '128px',
-                            }}
-                        >
-                            Loading...
-                        </p>
+                        <TextArea>Loading...</TextArea>
                     )}
                 </div>
             </GameContextProvider>
