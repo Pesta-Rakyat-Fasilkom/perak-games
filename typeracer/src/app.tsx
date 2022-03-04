@@ -64,7 +64,7 @@ export function App() {
                     {inMobile ? (
                         <TextArea>Game ini hanya dapat dimainkan pada Desktop.</TextArea>
                     ) : !isLoading && words.length > 1 ? (
-                        <GameArea words={words} onProgress={(a) => null} frozen={false} removeWords={removeWords} />
+                        <GameArea words={words} removeWords={removeWords} />
                     ) : (
                         <TextArea>Loading...</TextArea>
                     )}

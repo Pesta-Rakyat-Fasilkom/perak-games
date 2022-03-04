@@ -5,7 +5,7 @@ import { useGameContext } from '../context/GameContext'
 import GameProps from '../interface/Game'
 import Word from './Word'
 
-const GameArea: FunctionalComponent<GameProps> = ({ words, onProgress, frozen, removeWords }) => {
+const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
     const [currentWord, setCurrentWord] = useState(words[0])
     const [currentProgress, setProgress] = useState('')
     const [history, setHistory] = useState<string[]>([])
