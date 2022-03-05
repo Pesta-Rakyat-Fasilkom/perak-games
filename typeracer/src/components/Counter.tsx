@@ -3,7 +3,7 @@ import { useGameContext } from '../context/GameContext'
 
 const Counter: FunctionalComponent = () => {
     const { wordsCount, charCount, expectedCharCount, strokeCount, wpm, accuracy } = useGameContext()
-    const p = wpm / 100
+    const p = Math.min(1, wpm / 100)
     const r = Math.round(255 - (255 - 76) * p)
     const g = Math.round(255 - (255 - 198) * p)
     const b = Math.round(255 - (255 - 103) * p)
