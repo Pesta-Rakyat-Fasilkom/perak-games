@@ -36,8 +36,8 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
 
         if (currentProgress[currentProgress.length - 1] == ' ' && currentProgress.length != 1) {
             if (currentProgress.trim() == currentWord) mutateWordsCount('increment')
-            mutateCharCount(countOverlap(currentWord, currentProgress.trim()) + 1)
-            mutateExpectedCount(currentWord.length + 1)
+            mutateCharCount(countOverlap(currentWord, currentProgress.trim()))
+            mutateExpectedCount(currentWord.length)
             mutateExpectedWordsCount('increment')
 
             let nextIdx = words.indexOf(currentWord) + 1
@@ -93,7 +93,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
                     if (key == 'backspace') {
                         setProgress((current) => current.slice(0, current.length - 1))
                     } else {
-                        mutateStrokeCount('increment')
+                        if (key != ' ') mutateStrokeCount('increment')
                         setProgress((current) => current + key)
                     }
                 }}
