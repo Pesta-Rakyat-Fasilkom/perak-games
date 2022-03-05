@@ -4,24 +4,10 @@ import GameContextType from '../interface/GameContext'
 import GameContextProps from '../interface/GameContextProps'
 import CryptoJS from 'crypto-js'
 import pako from 'pako'
+import { counterReducer, deltaReducer } from '../utils/reducers'
 
 export const GameContext = createContext({} as GameContextType)
 export const useGameContext = () => useContext(GameContext)
-
-const counterReducer = (state: number, action: string) => {
-    switch (action) {
-        case 'increment':
-            return state + 1
-        case 'decrement':
-            return state - 1
-        case 'reset':
-            return 0
-        default:
-            throw new Error('Unexpected action')
-    }
-}
-
-const deltaReducer = (state: number, delta: number) => state + delta
 
 export const GameContextProvider: FunctionalComponent<GameContextProps> = ({ children, encKey }) => {
     const [startTime, setStartTime] = useState(0)
