@@ -93,7 +93,10 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
                     if (key == 'backspace') {
                         setProgress((current) => current.slice(0, current.length - 1))
                     } else {
-                        if (key != ' ') mutateStrokeCount('increment')
+                        if (key != ' ') {
+                            if (currentProgress.length - currentWord.length + 1 > 5) return
+                            mutateStrokeCount('increment')
+                        }
                         setProgress((current) => current + key)
                     }
                 }}
