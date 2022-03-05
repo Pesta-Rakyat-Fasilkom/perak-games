@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'preact/hooks'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
 import { useGameContext } from '../context/GameContext'
 import GameProps from '../interface/Game'
+import { countOverlap } from '../utils/word'
 import Word from './Word'
 
 const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
@@ -35,7 +36,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
 
         if (currentProgress[currentProgress.length - 1] == ' ' && currentProgress.length != 1) {
             if (currentProgress.trim() == currentWord) mutateWordsCount('increment')
-            mutateCharCount(currentProgress.length)
+            mutateCharCount(countOverlap(currentWord, currentProgress.trim()) + 1)
             mutateExpectedCount(currentWord.length + 1)
             mutateExpectedWordsCount('increment')
 
@@ -84,7 +85,7 @@ const GameArea: FunctionalComponent<GameProps> = ({ words, removeWords }) => {
                 onKeyEvent={(key, e) => {
                     e.preventDefault()
                     if (!e.isTrusted) return
-                    
+
                     if (key == 'space') {
                         key = ' '
                     }

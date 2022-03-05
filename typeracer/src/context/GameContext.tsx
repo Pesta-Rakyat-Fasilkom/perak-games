@@ -32,7 +32,7 @@ export const GameContextProvider: FunctionalComponent<GameContextProps> = ({ chi
             const newAccuracy = charAccuracy * wordAccuracy * 100
 
             setAccuracy(newAccuracy)
-            setWpm((strokeCount / 5) * 2 * Math.min(newAccuracy, 1))
+            setWpm((charCount / 5) * 2 * Math.min(newAccuracy, 1))
         } else {
             setAccuracy(0)
             setWpm(0)
