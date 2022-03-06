@@ -10,6 +10,7 @@ clumsy_dir = Path("clumsy-bird").absolute()
 tetris_dir = Path("react-tetris").absolute()
 pacman_dir = Path("pacman-js").absolute()
 typeracer_dir = Path("typeracer").absolute()
+bad_apple_dir = Path("bad-canvas2d").absolute()
 result_dir = Path("result").absolute()
 
 # Flappy Bird
@@ -64,6 +65,19 @@ res = subprocess.run("yarn build", shell=True)
 res.check_returncode()
 
 shutil.copytree(typeracer_dir / "dist", result_dir / "typeracer")
+
+# Bad Apple!!
+(result_dir / "bad-apple").mkdir()
+copied_files = [
+    "index.html",
+    "index.js",
+    "style.css",
+    "audio.ogg",
+    "frames.gz",
+    "lyrics.json",
+]
+for fname in copied_files:
+    shutil.copyfile(bad_apple_dir / fname, result_dir / "bad-apple" / fname)
 
 os.chdir(cwd)
 ghp_import(
