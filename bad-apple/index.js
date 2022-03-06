@@ -13,6 +13,11 @@ var lyricsJson
 var intervalId
 var lagCount = 0
 
+// padding-x: 3rem
+const padX = 2 * 3 * 16
+const width = Math.min((window.innerWidth > 0 ? window.innerWidth : screen.width) - padX, 640)
+const multip = width / 640
+
 onload = async function () {
     audio = new Audio('audio.ogg')
     let res = await fetch('./frames.gz')
@@ -27,6 +32,9 @@ onload = async function () {
     messageElem.innerText = 'Loaded.'
     playBtn.style.display = 'block'
     canvas.style.display = 'block'
+
+    canvas.width = width
+    canvas.height = 480 * multip
 }
 
 async function startDraw() {
@@ -69,7 +77,7 @@ async function startDraw() {
             // Only draw if alpha is not 0 (not black)
             if (alpha != 0) {
                 ctx.fillStyle = 'rgba(255, 255, 255, ' + (alpha / 255).toFixed(2) + ')'
-                ctx.fillRect(x * 10, y * 10, 10, 10)
+                ctx.fillRect(x * 10 * multip, y * 10 * multip, 10 * multip, 10 * multip)
             }
         }
     }
