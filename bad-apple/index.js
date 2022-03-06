@@ -38,7 +38,7 @@ onload = async function () {
 }
 
 async function startDraw() {
-    if (currentOffset >= 6600) {
+    if (currentOffset >= 6570) {
         clearInterval(intervalId)
         messageElem.innerHTML = "<a href='https://rorre.xyz'>Ren</a> made this."
         return
@@ -86,9 +86,10 @@ async function startDraw() {
 function start() {
     playBtn.remove()
     audio.play()
+
     intervalId = setInterval(async () => {
         await startDraw()
-        let expectedOffset = Math.floor(audio.currentTime / (1 / 30)) + 10
+        let expectedOffset = Math.floor(audio.currentTime / (1 / 30))
         if (Math.abs(currentOffset - expectedOffset) > 20) {
             lagCount += 1
             currentOffset = expectedOffset
@@ -97,9 +98,9 @@ function start() {
             currentOffset += 1
         }
 
-        if (currentOffset >= lyricsJson[0][0]) {
+        if (lyricsJson.length > 0 && currentOffset >= lyricsJson[0][0]) {
             messageElem.innerText = lyricsJson[0][1]
             lyricsJson.splice(0, 1)
         }
-    }, 1000 / 30)
+    }, 1000 / 29.8)
 }
