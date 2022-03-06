@@ -15,9 +15,12 @@ var lagCount = 0
 
 onload = async function () {
     audio = new Audio('audio.ogg')
-    let res = await fetch('./frames.json')
-    resJson = await res.json()
+    let res = await fetch('./frames.gz')
+    let resBuf = await res.arrayBuffer()
 
+    resJson = JSON.parse(new TextDecoder().decode(pako.ungzip(resBuf)))
+    // Clear memory
+    resBuf = null
     res = await fetch('./lyrics.json')
     lyricsJson = await res.json()
 

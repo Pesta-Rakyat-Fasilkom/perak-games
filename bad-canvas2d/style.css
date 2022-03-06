@@ -59,6 +59,10 @@ body {
     margin-bottom: 0;
 }
 
+#messageText a {
+    color: #21fefd;
+}
+
 #warnText {
     margin-top: 0;
     color: #ffff7b;
