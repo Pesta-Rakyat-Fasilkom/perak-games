@@ -99,10 +99,13 @@ function start() {
     intervalId = setInterval(async () => {
         await startDraw()
         let expectedOffset = Math.floor(audio.currentTime / (1 / 30))
-        if (Math.abs(currentOffset - expectedOffset) > 20) {
+        let deltaOffset = Math.abs(currentOffset - expectedOffset)
+        if (deltaOffset > 20) {
             lagCount += 1
             currentOffset = expectedOffset
             warnElem.style.display = 'block'
+        } else if (deltaOffset > 10) {
+            currentOffset = expectedOffset
         } else {
             currentOffset += 1
         }
