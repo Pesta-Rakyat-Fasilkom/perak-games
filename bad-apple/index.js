@@ -19,22 +19,31 @@ const width = Math.min((window.innerWidth > 0 ? window.innerWidth : screen.width
 const multip = width / 640
 
 onload = async function () {
-    audio = new Audio('audio.ogg')
-    let res = await fetch('./frames.gz')
-    let resBuf = await res.arrayBuffer()
+    try {
+        audio = new Audio('audio.ogg')
+        let res = await axios.get('./frames.gz', {
+            onDownloadProgress: (progressEvent) => {
+                messageElem.innerText = `Loading... ${Math.floor((progressEvent.loaded / progressEvent.total) * 100)}%`
+            },
+            responseType: 'arraybuffer',
+        })
+        let resBuf = res.data
 
-    resJson = JSON.parse(new TextDecoder().decode(pako.ungzip(resBuf)))
-    // Clear memory
-    resBuf = null
-    res = await fetch('./lyrics.json')
-    lyricsJson = await res.json()
+        resJson = JSON.parse(new TextDecoder().decode(pako.ungzip(resBuf)))
+        // Clear memory
+        resBuf = null
+        res = await fetch('./lyrics.json')
+        lyricsJson = await res.json()
 
-    messageElem.innerText = 'Loaded.'
-    playBtn.style.display = 'block'
-    canvas.style.display = 'block'
+        messageElem.innerText = 'Loaded.'
+        playBtn.style.display = 'block'
+        canvas.style.display = 'block'
 
-    canvas.width = width
-    canvas.height = 480 * multip
+        canvas.width = width
+        canvas.height = 480 * multip
+    } catch {
+        messageElem.innerText = 'Load failed!'
+    }
 }
 
 async function startDraw() {
@@ -90,10 +99,13 @@ function start() {
     intervalId = setInterval(async () => {
         await startDraw()
         let expectedOffset = Math.floor(audio.currentTime / (1 / 30))
-        if (Math.abs(currentOffset - expectedOffset) > 20) {
+        let deltaOffset = Math.abs(currentOffset - expectedOffset)
+        if (deltaOffset > 20) {
             lagCount += 1
             currentOffset = expectedOffset
             warnElem.style.display = 'block'
+        } else if (deltaOffset > 10) {
+            currentOffset = expectedOffset
         } else {
             currentOffset += 1
         }
