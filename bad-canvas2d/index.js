@@ -58,37 +58,20 @@ async function startDraw() {
     ctx.fillStyle = 'black'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    for (let x = 0; x < 64; x++) {
-        for (let y = 0; y < 48; y++) {
-            let pixelDatas = resJson[x][y]
-            let found = false
-            let alpha = -1
+    let currFrame = resJson[currentOffset]
+    for (let i = 0; i < currFrame.length; i++) {
+        // [x, y, w, h, alpha]
+        let curr = currFrame[i]
 
-            for (let i = 0; i < pixelDatas.length; i++) {
-                let curr = pixelDatas[i]
-                // frame list is sorted, by this point we will never find it,
-                if (curr[0] > currentOffset) break
-                if (curr[0] == currentOffset) {
-                    alpha = curr[1]
-                    found = true
-                    pixelDatas.splice(i, 1)
-                    break
-                }
-            }
+        let alpha = curr[4]
+        let w = curr[2] + 1
+        let h = curr[3] + 1
+        let x = curr[0] - w / 2
+        let y = curr[1] - h / 2
 
-            // Use previous alpha value if not found
-            if (!found) {
-                alpha = lastPixelData[x + '|' + y]
-            }
-
-            lastPixelData[x + '|' + y] = alpha
-
-            // Only draw if alpha is not 0 (not black)
-            if (alpha != 0) {
-                ctx.fillStyle = 'rgba(255, 255, 255, ' + (alpha / 255).toFixed(2) + ')'
-                ctx.fillRect(x * 10 * multip, y * 10 * multip, 10 * multip, 10 * multip)
-            }
-        }
+        let value = 255 * alpha
+        ctx.fillStyle = `rgb(${value}, ${value}, ${value})`
+        ctx.fillRect(x * multip, y * multip, w * multip, h * multip)
     }
 }
 
@@ -99,6 +82,11 @@ function start() {
     intervalId = setInterval(async () => {
         await startDraw()
         let expectedOffset = Math.floor(audio.currentTime / (1 / 30))
+        if (currentOffset > expectedOffset) {
+            // We are way too quick! let's just wait until we match the offset :)
+            return
+        }
+
         let deltaOffset = Math.abs(currentOffset - expectedOffset)
         if (deltaOffset > 20) {
             lagCount += 1
