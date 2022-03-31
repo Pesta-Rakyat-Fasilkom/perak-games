@@ -64,12 +64,13 @@ async function startDraw() {
         let curr = currFrame[i]
 
         let alpha = curr[4]
-        let w = curr[2]
-        let h = curr[3]
+        let w = curr[2] + 1
+        let h = curr[3] + 1
         let x = curr[0] - w / 2
         let y = curr[1] - h / 2
 
-        ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')'
+        let value = 255 * alpha
+        ctx.fillStyle = `rgb(${value}, ${value}, ${value})`
         ctx.fillRect(x * multip, y * multip, w * multip, h * multip)
     }
 }
@@ -81,6 +82,11 @@ function start() {
     intervalId = setInterval(async () => {
         await startDraw()
         let expectedOffset = Math.floor(audio.currentTime / (1 / 30))
+        if (currentOffset > expectedOffset) {
+            // We are way too quick! let's just wait until we match the offset :)
+            return
+        }
+
         let deltaOffset = Math.abs(currentOffset - expectedOffset)
         if (deltaOffset > 20) {
             lagCount += 1
