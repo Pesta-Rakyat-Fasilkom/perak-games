@@ -246,7 +246,8 @@ var debug = {
           actualScore.innerText = '' + score;
         },
         stop: function() {
-          // TODO: on end here
+          window.postMessage(score, 'http://localhost:3000');
+          window.postMessage(score, 'https://perak.cs.ui.ac.id');
         }
       }
     }
