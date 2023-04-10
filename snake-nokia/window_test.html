@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Test Snake Nokia</title>
+        <script>
+            window.addEventListener(
+                'message',
+                (event) => {
+                    alert(event.data, event.origin);
+                },
+                false
+            );
+        </script>
+    </head>
+    <body>
+	<iframe src="index.html" width="700" height="700"></iframe>
+    </body>
+</html>

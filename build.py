@@ -86,6 +86,7 @@ copied_files = [
     "index.html",
     "main.js",
     "styles.css",
+    "nokiafc22.ttf",
 ]
 for fname in copied_files:
     shutil.copyfile(snake_nokia_dir / fname, result_dir / "snake-nokia" / fname)
