@@ -1,5 +1,5 @@
 origin = "http://localhost:3000"
-import CryptoJS from "./crypto-js/crypto-js";
+
 
 var debug = {
   x: [],
