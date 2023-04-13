@@ -1,108 +1,111 @@
-origin = "perak.cs.ui.ac.id"
-
+origin = "https://perak.cs.ui.ac.id";
 
 var debug = {
   x: [],
   y: [],
-  food: []
+  food: [],
 };
-
-
 
 (function (debug) {
   var canvas = document.getElementById("myCanvas");
-  var msg = document.getElementById('msg');
-  var actualScore = document.getElementById('actual-score');
-  var lastScore = "0"
+  var msg = document.getElementById("msg");
+  var actualScore = document.getElementById("actual-score");
+  var lastScore = "0";
   var ctx = canvas.getContext("2d");
   var gameOn = 0;
   var speed = 1;
-  var endGame = new Event('endGame');
+  var endGame = new Event("endGame");
   var scores = createScores();
   var anim;
 
-  document.addEventListener('endGame', function endGameHandler(e) {
-    msg.innerHTML = 'Game Over! Press Space to start a new game'
-    gameOn = 0;
-    window.cancelAnimationFrame(anim);
-    scores.stop();
-    lastScore = actualScore.innerHTML
+  document.addEventListener(
+    "endGame",
+    function endGameHandler(e) {
+      msg.innerHTML = "Game Over! Press Space to start a new game";
+      gameOn = 0;
+      window.cancelAnimationFrame(anim);
+      scores.stop();
+      lastScore = actualScore.innerHTML;
 
-    window.parent.postMessage("request_token", {
-      targetOrigin: origin
-    })
-
-  }, false);
+      window.parent.postMessage("request_token", {
+        targetOrigin: origin,
+      });
+    },
+    false
+  );
 
   window.addEventListener("message", (event) => {
     if (event.data === "start_game") {
-      document.dispatchEvent(new KeyboardEvent("keydown", {
-        keyCode: 32
-      }))
-      return
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          keyCode: 32,
+        })
+      );
+      return;
     }
     if (event.data !== "" && event.data.includes("nudes")) {
-      const key = event.data.split(" ")[1]
-      const secured_score = CryptoJS.AES.encrypt(lastScore, key).toString()
+      const key = event.data.split(" ")[1];
+      const secured_score = CryptoJS.AES.encrypt(lastScore, key).toString();
       window.parent.postMessage(`score ${secured_score}`, {
-        targetOrigin: origin
-      })
-      return
+        targetOrigin: origin,
+      });
+      return;
     }
   });
 
-
-  document.addEventListener("keydown", function spaceHandler(e) {
-    if (e.keyCode === 32) {
-      e.preventDefault();
-      if (!gameOn) {
-        msg.innerHTML = 'Go!'
-        gameOn = 1;
-        game();
+  document.addEventListener(
+    "keydown",
+    function spaceHandler(e) {
+      if (e.keyCode === 32) {
+        e.preventDefault();
+        if (!gameOn) {
+          msg.innerHTML = "Go!";
+          gameOn = 1;
+          game();
+        }
       }
-    }
-  }, false);
-
-
+    },
+    false
+  );
 
   function game() {
     var snake = createSnake(speed);
     var food = createFood(canvas.width, canvas.height, "#EDE916");
-    var candy = createCandy(canvas.width, canvas.height)
-    var nextDir = '';
+    var candy = createCandy(canvas.width, canvas.height);
+    var nextDir = "";
 
     scores.start();
 
-    document.addEventListener('keydown', arrowsHandler, false);
+    document.addEventListener("keydown", arrowsHandler, false);
 
     function arrowsHandler(e) {
       switch (e.keyCode) {
         case 83:
         case 40: //down
           e.preventDefault();
-          nextDir = 'down';
+          nextDir = "down";
           break;
         case 68:
         case 39: //right
           e.preventDefault();
-          nextDir = 'right';
+          nextDir = "right";
           break;
         case 38:
         case 87: //up
           e.preventDefault();
-          nextDir = 'up';
+          nextDir = "up";
           break;
         case 65:
         case 37: //left
           e.preventDefault();
-          nextDir = 'left';
+          nextDir = "left";
           break;
         default:
       }
     }
     function play() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if ((snake.x[0] % 10 === 0) && (snake.y[0] % 10 === 0)) {
+      if (snake.x[0] % 10 === 0 && snake.y[0] % 10 === 0) {
         snake.update();
         snake.changeDir(nextDir);
       }
@@ -156,7 +159,11 @@ var debug = {
       spawn: function (posX, posY) {
         var matrix = [],
           free = [],
-          x, y, foodPos, i, len;
+          x,
+          y,
+          foodPos,
+          i,
+          len;
         for (i = 0; i < 20; i++) {
           matrix[i] = Array(20).fill(0);
         }
@@ -168,8 +175,7 @@ var debug = {
 
         for (i = 0; i < 20; i++) {
           for (var j = 0; j < 20; j++) {
-            if (!matrix[i][j])
-              free.push([i, j]);
+            if (!matrix[i][j]) free.push([i, j]);
           }
         }
         foodPos = Math.floor(Math.random() * free.length);
@@ -182,16 +188,14 @@ var debug = {
         ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
-      }
-    }
+      },
+    };
   }
   function createSnake(speed) {
-
     function unshiftAndCut(arr) {
       var result = arr.slice();
       return result.map(function (el, i) {
-        if (!i)
-          return arr[0];
+        if (!i) return arr[0];
         return arr[i - 1];
       });
     }
@@ -201,19 +205,19 @@ var debug = {
       dx: [speed],
       dy: [0],
       changeDir: function (nextDir) {
-        if (this.dx[0] && nextDir === 'up') {
+        if (this.dx[0] && nextDir === "up") {
           this.dx[0] = 0;
           this.dy[0] = -speed;
         }
-        if (this.dx[0] && nextDir === 'down') {
+        if (this.dx[0] && nextDir === "down") {
           this.dx[0] = 0;
           this.dy[0] = speed;
         }
-        if (this.dy[0] && nextDir === 'right') {
+        if (this.dy[0] && nextDir === "right") {
           this.dx[0] = speed;
           this.dy[0] = 0;
         }
-        if (this.dy[0] && nextDir === 'left') {
+        if (this.dy[0] && nextDir === "left") {
           this.dx[0] = -speed;
           this.dy[0] = 0;
         }
@@ -222,8 +226,8 @@ var debug = {
         for (var i = 0, len = this.x.length; i < len; i++) {
           ctx.beginPath();
           ctx.rect(this.x[i], this.y[i], 10, 10);
-          ctx.fillStyle = '#2B823A';
-          ctx.strokeStyle = '#012E34';
+          ctx.fillStyle = "#2B823A";
+          ctx.strokeStyle = "#012E34";
           ctx.fill();
           ctx.stroke();
           ctx.closePath();
@@ -236,10 +240,10 @@ var debug = {
       grow: function () {
         var lastX = this.x[this.x.length - 1];
         var lastY = this.y[this.y.length - 1];
-        var lastDX = this.dx[this.dx.length - 1]
-        var lastDY = this.dy[this.dy.length - 1]
-        this.x.push(lastX - (Math.sign(lastDX) * 10));
-        this.y.push(lastY - (Math.sign(lastDY) * 10));
+        var lastDX = this.dx[this.dx.length - 1];
+        var lastDY = this.dy[this.dy.length - 1];
+        this.x.push(lastX - Math.sign(lastDX) * 10);
+        this.y.push(lastY - Math.sign(lastDY) * 10);
         this.dx.push(lastDX);
         this.dy.push(lastDY);
       },
@@ -256,33 +260,30 @@ var debug = {
         var x = this.x[0],
           y = this.y[0];
         // Check collision with the wall
-        if (x < 0 || x + 10 > width || y < 0 || y + 10 > height)
-          return true;
+        if (x < 0 || x + 10 > width || y < 0 || y + 10 > height) return true;
         // Check collision with itself
         for (var i = 1, len = this.x.length; i < len; i++) {
-          if (x === this.x[i] && y === this.y[i])
-            return true;
+          if (x === this.x[i] && y === this.y[i]) return true;
         }
         return false;
-      }
-    }
+      },
+    };
   }
   function createScores() {
     var score;
     return {
       start: function () {
         score = 0;
-        actualScore.innerText = '0';
+        actualScore.innerText = "0";
       },
       incr: function (n) {
         score += n;
-        actualScore.innerText = '' + score;
+        actualScore.innerText = "" + score;
       },
       stop: function () {
         // window.postMessage(score, '*');
         // window.postMessage(score, 'https://perak.cs.ui.ac.id');
-      }
-    }
+      },
+    };
   }
-
-})(debug)
+})(debug);
