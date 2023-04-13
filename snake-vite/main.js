@@ -1,4 +1,4 @@
-origin = "http://localhost:3000"
+origin = "perak.cs.ui.ac.id"
 
 
 var debug = {
