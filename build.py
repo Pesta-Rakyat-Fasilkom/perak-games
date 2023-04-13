@@ -43,14 +43,14 @@ result_dir = Path("result").absolute()
 
 # TETRIS
 os.chdir(tetris_dir)
-res = subprocess.run("npm run build:lib", shell=True)
-res.check_returncode()
+# res = subprocess.run("npm run build:lib", shell=True)
+# res.check_returncode()
 
-res = subprocess.run("npm run build:app", shell=True)
-res.check_returncode()
+# res = subprocess.run("npm run build:app", shell=True)
+# res.check_returncode()
 
-shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
-shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
+# shutil.copytree(tetris_dir / "dist", result_dir / "tetris")
+# shutil.copy(tetris_dir / "src" / "index.html", result_dir / "tetris" / "index.html")
 
 # PACMAN
 # os.chdir(pacman_dir)
