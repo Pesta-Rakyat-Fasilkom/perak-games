@@ -12,6 +12,8 @@ pacman_dir = Path("pacman-js").absolute()
 typeracer_dir = Path("typeracer").absolute()
 bad_apple_dir = Path("bad-canvas2d").absolute()
 snake_nokia_dir = Path("snake-nokia").absolute()
+snake_2023_dir = Path("snake-2023").absolute()
+snake_vite_dir = Path("snake-vite").absolute()
 result_dir = Path("result").absolute()
 
 # Flappy Bird
@@ -90,6 +92,12 @@ copied_files = [
 ]
 for fname in copied_files:
     shutil.copyfile(snake_nokia_dir / fname, result_dir / "snake-nokia" / fname)
+
+# Snake 2023
+shutil.copytree(snake_2023_dir, result_dir / "snake-2023")
+
+# Snake Vite
+shutil.copytree(snake_vite_dir, result_dir / "snake-vite")
 
 os.chdir(cwd)
 ghp_import(
