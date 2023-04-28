@@ -8,6 +8,7 @@
     "url": "https://github.com/brandly/react-tetris"
   },
   "dependencies": {
+    "aes-encryption": "^1.0.4",
     "crypto-js": "^4.1.1",
     "keymaster": "1.6.2",
     "pako": "^2.0.4"
