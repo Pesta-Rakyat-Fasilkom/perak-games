@@ -571,56 +571,6 @@ function viewMatrix(game) {
 
 var Context = React__default["default"].createContext(init());
 
-function GameboardView() {
-    var game = React__default["default"].useContext(Context);
-    var matrix = viewMatrix(game);
-    return (React__default["default"].createElement("table", { className: "game-board" },
-        React__default["default"].createElement("tbody", null, matrix.map(function (row, i) {
-            var blocksInRow = row.map(function (block, j) {
-                var classString = "game-block " + (block ? getClassName(block) : 'block-empty');
-                return React__default["default"].createElement("td", { key: j, className: classString });
-            });
-            return React__default["default"].createElement("tr", { key: i }, blocksInRow);
-        }))));
-}
-
-var defaultBlock = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-];
-var PieceView = function (_a) {
-    var piece = _a.piece;
-    /* eslint-disable prefer-destructuring */
-    var blocks = piece ? getBlocks(piece)[0] : defaultBlock;
-    var rows = blocks.map(function (row, i) {
-        var blocksInRow = row.map(function (block, j) {
-            var classString = 'game-block ';
-            if (piece && block) {
-                classString += getClassName(piece);
-            }
-            else {
-                classString += 'block-empty';
-            }
-            return React__default["default"].createElement("td", { key: j, className: classString });
-        });
-        return React__default["default"].createElement("tr", { key: i }, blocksInRow);
-    });
-    return (React__default["default"].createElement("table", { className: "piece-view" },
-        React__default["default"].createElement("tbody", null, rows)));
-};
-
-function HeldPiece() {
-    var heldPiece = React__default["default"].useContext(Context).heldPiece;
-    return React__default["default"].createElement(PieceView, { piece: heldPiece === null || heldPiece === void 0 ? void 0 : heldPiece.piece });
-}
-
-function PieceQueue() {
-    var queue = React__default["default"].useContext(Context).queue;
-    return (React__default["default"].createElement("div", null, queue.queue.map(function (piece, i) { return (React__default["default"].createElement(PieceView, { piece: piece, key: i })); })));
-}
-
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function createCommonjsModule(fn, module) {
@@ -977,6 +927,56 @@ function removeKeyboardEvents(keyboardMap) {
     });
 }
 
+function GameboardView() {
+    var game = React__default["default"].useContext(Context);
+    var matrix = viewMatrix(game);
+    return (React__default["default"].createElement("table", { className: "game-board" },
+        React__default["default"].createElement("tbody", null, matrix.map(function (row, i) {
+            var blocksInRow = row.map(function (block, j) {
+                var classString = "game-block " + (block ? getClassName(block) : 'block-empty');
+                return React__default["default"].createElement("td", { key: j, className: classString });
+            });
+            return React__default["default"].createElement("tr", { key: i }, blocksInRow);
+        }))));
+}
+
+var defaultBlock = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+];
+var PieceView = function (_a) {
+    var piece = _a.piece;
+    /* eslint-disable prefer-destructuring */
+    var blocks = piece ? getBlocks(piece)[0] : defaultBlock;
+    var rows = blocks.map(function (row, i) {
+        var blocksInRow = row.map(function (block, j) {
+            var classString = 'game-block ';
+            if (piece && block) {
+                classString += getClassName(piece);
+            }
+            else {
+                classString += 'block-empty';
+            }
+            return React__default["default"].createElement("td", { key: j, className: classString });
+        });
+        return React__default["default"].createElement("tr", { key: i }, blocksInRow);
+    });
+    return (React__default["default"].createElement("table", { className: "piece-view" },
+        React__default["default"].createElement("tbody", null, rows)));
+};
+
+function HeldPiece() {
+    var heldPiece = React__default["default"].useContext(Context).heldPiece;
+    return React__default["default"].createElement(PieceView, { piece: heldPiece === null || heldPiece === void 0 ? void 0 : heldPiece.piece });
+}
+
+function PieceQueue() {
+    var queue = React__default["default"].useContext(Context).queue;
+    return (React__default["default"].createElement("div", null, queue.queue.map(function (piece, i) { return (React__default["default"].createElement(PieceView, { piece: piece, key: i })); })));
+}
+
 var defaultKeyboardMap = {
     down: 'MOVE_DOWN',
     left: 'MOVE_LEFT',
@@ -989,6 +989,11 @@ var defaultKeyboardMap = {
     c: 'HOLD',
     shift: 'HOLD'
 };
+window.addEventListener("keydown", function (e) {
+    if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
 // https://harddrop.com/wiki/Tetris_Worlds#Gravity
 var tickSeconds = function (level) {
     return Math.pow((0.8 - (level - 1) * 0.007), (level - 1));

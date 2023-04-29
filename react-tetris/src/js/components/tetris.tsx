@@ -1,10 +1,10 @@
 import React from 'react';
-import Gameboard from './gameboard';
-import * as Game from '../models/Game';
-import HeldPiece from './held-piece';
-import PieceQueue from './piece-queue';
 import { Context } from '../context';
 import { KeyboardMap, useKeyboardControls } from '../hooks/useKeyboardControls';
+import * as Game from '../models/Game';
+import Gameboard from './gameboard';
+import HeldPiece from './held-piece';
+import PieceQueue from './piece-queue';
 
 type RenderFn = (params: {
   HeldPiece: React.ComponentType;
@@ -51,6 +51,12 @@ const defaultKeyboardMap: KeyboardMap = {
   c: 'HOLD',
   shift: 'HOLD'
 };
+
+window.addEventListener("keydown", function(e) {
+  if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+      e.preventDefault();
+  }
+}, false);
 
 // https://harddrop.com/wiki/Tetris_Worlds#Gravity
 const tickSeconds = (level: number) =>
