@@ -31591,56 +31591,6 @@
 
 	var Context = react.createContext(init());
 
-	function GameboardView() {
-	    var game = react.useContext(Context);
-	    var matrix = viewMatrix(game);
-	    return (react.createElement("table", { className: "game-board" },
-	        react.createElement("tbody", null, matrix.map(function (row, i) {
-	            var blocksInRow = row.map(function (block, j) {
-	                var classString = "game-block " + (block ? getClassName(block) : 'block-empty');
-	                return react.createElement("td", { key: j, className: classString });
-	            });
-	            return react.createElement("tr", { key: i }, blocksInRow);
-	        }))));
-	}
-
-	var defaultBlock = [
-	    [0, 0, 0, 0],
-	    [0, 0, 0, 0],
-	    [0, 0, 0, 0],
-	    [0, 0, 0, 0]
-	];
-	var PieceView = function (_a) {
-	    var piece = _a.piece;
-	    /* eslint-disable prefer-destructuring */
-	    var blocks = piece ? getBlocks(piece)[0] : defaultBlock;
-	    var rows = blocks.map(function (row, i) {
-	        var blocksInRow = row.map(function (block, j) {
-	            var classString = 'game-block ';
-	            if (piece && block) {
-	                classString += getClassName(piece);
-	            }
-	            else {
-	                classString += 'block-empty';
-	            }
-	            return react.createElement("td", { key: j, className: classString });
-	        });
-	        return react.createElement("tr", { key: i }, blocksInRow);
-	    });
-	    return (react.createElement("table", { className: "piece-view" },
-	        react.createElement("tbody", null, rows)));
-	};
-
-	function HeldPiece() {
-	    var heldPiece = react.useContext(Context).heldPiece;
-	    return react.createElement(PieceView, { piece: heldPiece === null || heldPiece === void 0 ? void 0 : heldPiece.piece });
-	}
-
-	function PieceQueue() {
-	    var queue = react.useContext(Context).queue;
-	    return (react.createElement("div", null, queue.queue.map(function (piece, i) { return (react.createElement(PieceView, { piece: piece, key: i })); })));
-	}
-
 	var keymaster = createCommonjsModule(function (module) {
 	(function(global){
 	  var k,
@@ -31991,6 +31941,56 @@
 	    });
 	}
 
+	function GameboardView() {
+	    var game = react.useContext(Context);
+	    var matrix = viewMatrix(game);
+	    return (react.createElement("table", { className: "game-board" },
+	        react.createElement("tbody", null, matrix.map(function (row, i) {
+	            var blocksInRow = row.map(function (block, j) {
+	                var classString = "game-block " + (block ? getClassName(block) : 'block-empty');
+	                return react.createElement("td", { key: j, className: classString });
+	            });
+	            return react.createElement("tr", { key: i }, blocksInRow);
+	        }))));
+	}
+
+	var defaultBlock = [
+	    [0, 0, 0, 0],
+	    [0, 0, 0, 0],
+	    [0, 0, 0, 0],
+	    [0, 0, 0, 0]
+	];
+	var PieceView = function (_a) {
+	    var piece = _a.piece;
+	    /* eslint-disable prefer-destructuring */
+	    var blocks = piece ? getBlocks(piece)[0] : defaultBlock;
+	    var rows = blocks.map(function (row, i) {
+	        var blocksInRow = row.map(function (block, j) {
+	            var classString = 'game-block ';
+	            if (piece && block) {
+	                classString += getClassName(piece);
+	            }
+	            else {
+	                classString += 'block-empty';
+	            }
+	            return react.createElement("td", { key: j, className: classString });
+	        });
+	        return react.createElement("tr", { key: i }, blocksInRow);
+	    });
+	    return (react.createElement("table", { className: "piece-view" },
+	        react.createElement("tbody", null, rows)));
+	};
+
+	function HeldPiece() {
+	    var heldPiece = react.useContext(Context).heldPiece;
+	    return react.createElement(PieceView, { piece: heldPiece === null || heldPiece === void 0 ? void 0 : heldPiece.piece });
+	}
+
+	function PieceQueue() {
+	    var queue = react.useContext(Context).queue;
+	    return (react.createElement("div", null, queue.queue.map(function (piece, i) { return (react.createElement(PieceView, { piece: piece, key: i })); })));
+	}
+
 	var defaultKeyboardMap = {
 	    down: 'MOVE_DOWN',
 	    left: 'MOVE_LEFT',
@@ -32003,6 +32003,11 @@
 	    c: 'HOLD',
 	    shift: 'HOLD'
 	};
+	window.addEventListener("keydown", function (e) {
+	    if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+	        e.preventDefault();
+	    }
+	}, false);
 	// https://harddrop.com/wiki/Tetris_Worlds#Gravity
 	var tickSeconds = function (level) {
 	    return Math.pow((0.8 - (level - 1) * 0.007), (level - 1));
